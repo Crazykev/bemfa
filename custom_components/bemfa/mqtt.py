@@ -38,7 +38,13 @@ class BemfaMqtt:
         self._hass = hass
 
         # Init MQTT connection
-        self._mqttc = mqtt.Client(uid, mqtt.MQTTv311)
+        client_kwargs: dict[str, Any] = {
+            "client_id": uid,
+            "protocol": mqtt.MQTTv311,
+        }
+        if hasattr(mqtt, "CallbackAPIVersion"):
+            client_kwargs["callback_api_version"] = mqtt.CallbackAPIVersion.VERSION1
+        self._mqttc = mqtt.Client(**client_kwargs)
 
         self._topic_to_sync: dict[str, Sync] = {}
 
