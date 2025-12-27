@@ -1,8 +1,13 @@
 """Constants for the bemfa integration."""
 
+from enum import Enum
 from typing import Final
 
-from homeassistant.backports.enum import StrEnum
+try:
+    from enum import StrEnum  # type: ignore[attr-defined]
+except ImportError:  # pragma: no cover
+    class StrEnum(str, Enum):
+        pass
 
 DOMAIN: Final = "bemfa"
 
